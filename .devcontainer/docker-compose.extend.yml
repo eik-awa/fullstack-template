@@ -1,0 +1,13 @@
+services:
+  workspace:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      db:
+        condition: service_healthy
+      backend:
+        condition: service_started
+      frontend:
+        condition: service_started

@@ -1,0 +1,9 @@
+# グローバル: チームのレビューが必要
+* @your-org/app-engineers
+
+# インフラは別レビュワーを要求
+/infra/ @your-org/app-engineers @your-org/platform-team
+/.github/workflows/ @your-org/app-engineers @your-org/platform-team
+
+# セキュリティ関連は念入りに
+/backend/app/core/auth.py @your-org/app-engineers @your-org/security-team
