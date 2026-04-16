@@ -29,7 +29,7 @@
     }
   },
 
-  "postCreateCommand": "cd /workspace/backend && pip install --quiet 'fastapi[standard]' 'sqlalchemy[asyncio]>=2.0' 'pydantic>=2.0' pydantic-settings alembic aiomysql cryptography 'python-jose[cryptography]' httpx structlog && cd /workspace/frontend && npm ci",
+  "postCreateCommand": "cd /workspace/backend && pip install --quiet 'fastapi[standard]' 'sqlalchemy[asyncio]>=2.0' 'pydantic>=2.0' pydantic-settings alembic aiomysql cryptography 'python-jose[cryptography]' httpx structlog && DATABASE_URL='mysql+aiomysql://root:rootpass@db:3306/todos' alembic upgrade head && cd /workspace/frontend && npm ci",
 
   "customizations": {
     "vscode": {

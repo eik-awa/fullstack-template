@@ -50,9 +50,22 @@ docker-compose up -d
 
 ## 4. DBマイグレーションの実行
 
+**Docker Compose で起動している場合:**
+
 ```bash
 docker-compose exec backend alembic upgrade head
 ```
+
+**devcontainer (VS Code) を使っている場合:**  
+devcontainer 内は Docker コマンドが使えないため、ワークスペースから直接実行します。
+
+```bash
+cd /workspace/backend
+DATABASE_URL="mysql+aiomysql://root:rootpass@db:3306/todos" alembic upgrade head
+```
+
+> **注意:** このマイグレーションを実行しないと、`/api/v1/todos` が 500 エラーを返し、  
+> ブラウザ上では CORS エラーとして表示されます。
 
 ## 5. 動作確認
 

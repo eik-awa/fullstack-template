@@ -2,7 +2,7 @@ services:
   workspace:
     image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
     volumes:
-      - ..:/workspace:cached
+      - .:/workspace:cached
     command: sleep infinity
     depends_on:
       db:

@@ -5,7 +5,7 @@
  */
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
-import { authMockEnabled, setAccessTokenProvider } from "@/lib/authConfig";
+import { authMockEnabled } from "@/lib/authConfig";
 import { setAccessTokenProvider as setApiToken } from "@/lib/apiClient";
 
 interface Props {
@@ -55,6 +55,3 @@ export function AuthGuard({ children }: Props) {
 
   return <>{children}</>;
 }
-
-// 未使用 import を避けるための再エクスポート
-export { setAccessTokenProvider };
