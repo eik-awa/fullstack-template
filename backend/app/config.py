@@ -4,6 +4,7 @@
 環境変数から読み込み、pydantic-settings で型安全にアクセス。
 本番では Secrets Manager 経由で DB_URL などが注入される。
 """
+
 from functools import lru_cache
 from typing import Literal
 

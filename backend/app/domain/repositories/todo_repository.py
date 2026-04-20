@@ -9,6 +9,7 @@ domain層からはこの抽象のみを参照する。
 - テスト時は InMemory 実装を DI するだけで単体テストできる
 - 将来 MySQL → PostgreSQL でも domain は無変更
 """
+
 from abc import ABC, abstractmethod
 from uuid import UUID
 

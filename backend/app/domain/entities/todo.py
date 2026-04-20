@@ -10,8 +10,9 @@ Todo ドメインエンティティ。
 迷うことがなくなる。dataclass の frozen=True で不変オブジェクトにし、
 状態変更は必ず新しいインスタンスを返す関数で行う（=純粋関数）。
 """
+
 from dataclasses import dataclass, field, replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from app.domain.value_objects.todo_status import TodoStatus
@@ -21,7 +22,7 @@ class DomainError(Exception):
     """ドメインルール違反を表す基底例外。"""
 
 
-class InvalidTodoTitle(DomainError):
+class InvalidTodoTitleError(DomainError):
     """Todoタイトルが不正。"""
 
 
@@ -44,8 +45,8 @@ class Todo:
     status: TodoStatus
     description: str | None = None
     due_date: datetime | None = None
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     @classmethod
     def create(
@@ -72,7 +73,7 @@ class Todo:
         return replace(
             self,
             title=new_title.strip(),
-            updated_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(UTC),
         )
 
     def change_status(self, new_status: TodoStatus) -> "Todo":
@@ -85,27 +86,27 @@ class Todo:
         return replace(
             self,
             status=new_status,
-            updated_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(UTC),
         )
 
     def change_description(self, new_description: str | None) -> "Todo":
         return replace(
             self,
             description=new_description,
-            updated_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(UTC),
         )
 
     def change_due_date(self, new_due_date: datetime | None) -> "Todo":
         return replace(
             self,
             due_date=new_due_date,
-            updated_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(UTC),
         )
 
     @staticmethod
     def _validate_title(title: str) -> None:
         stripped = title.strip()
         if not stripped:
-            raise InvalidTodoTitle("タイトルは1文字以上必要です")
+            raise InvalidTodoTitleError("タイトルは1文字以上必要です")
         if len(stripped) > 200:
-            raise InvalidTodoTitle("タイトルは200文字以内にしてください")
+            raise InvalidTodoTitleError("タイトルは200文字以内にしてください")

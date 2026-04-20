@@ -1,4 +1,5 @@
 """ヘルスチェック。ALB/ECSのヘルスチェック用。"""
+
 from fastapi import APIRouter
 
 router = APIRouter(tags=["health"])

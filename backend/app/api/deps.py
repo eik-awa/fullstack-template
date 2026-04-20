@@ -4,6 +4,7 @@ FastAPI の Depends で使う依存関数の集合。
 ここで「リポジトリ実装をユースケースに注入」を行う。
 将来リポジトリ実装を変えたくなったら、ここだけ差し替える。
 """
+
 from typing import Annotated
 
 from fastapi import Depends

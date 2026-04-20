@@ -41,6 +41,6 @@ describe("TodoItem", () => {
 
   it("ステータスバッジが表示される", () => {
     renderWithQuery(<TodoItem todo={mockTodo} />);
-    expect(screen.getByText("未着手")).toBeInTheDocument();
+    expect(screen.getByText("未着手", { selector: "span" })).toBeInTheDocument();
   });
 });

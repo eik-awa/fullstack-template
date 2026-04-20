@@ -4,14 +4,15 @@ Alembic のマイグレーション環境設定。
 settings から DATABASE_URL を読み込み、SQLAlchemy 2.0 の
 async エンジンで実行する。
 """
+
 import asyncio
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
+from alembic import context
 from app.config import settings
 from app.infrastructure.database import Base
 

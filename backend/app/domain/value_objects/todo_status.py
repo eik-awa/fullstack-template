@@ -1,6 +1,7 @@
 """
 Todoのステータスを表す値オブジェクト（Enum）。
 """
+
 from enum import StrEnum
 
 

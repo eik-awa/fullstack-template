@@ -4,6 +4,7 @@ TodoRepository の SQLAlchemy 実装。
 ドメインエンティティ ←→ ORMモデル の変換はここで行う。
 他の層は ORM モデルの存在を知らない。
 """
+
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -32,11 +33,7 @@ class TodoRepositoryImpl(TodoRepository):
         return self._to_entity(orm) if orm else None
 
     async def list_by_user(self, user_id: str) -> list[Todo]:
-        stmt = (
-            select(TodoORM)
-            .where(TodoORM.user_id == user_id)
-            .order_by(TodoORM.created_at.desc())
-        )
+        stmt = select(TodoORM).where(TodoORM.user_id == user_id).order_by(TodoORM.created_at.desc())
         result = await self._session.execute(stmt)
         return [self._to_entity(orm) for orm in result.scalars().all()]
 
@@ -57,7 +54,7 @@ class TodoRepositoryImpl(TodoRepository):
             TodoORM.user_id == user_id,
         )
         result = await self._session.execute(stmt)
-        return result.rowcount > 0
+        return result.rowcount > 0  # type: ignore[attr-defined,no-any-return]
 
     # ---------- 変換 ----------
     @staticmethod
@@ -76,7 +73,7 @@ class TodoRepositoryImpl(TodoRepository):
     @staticmethod
     def _to_entity(orm: TodoORM) -> Todo:
         return Todo(
-            id=UUID(orm.id),
+            id=orm.id,
             user_id=orm.user_id,
             title=orm.title,
             description=orm.description,

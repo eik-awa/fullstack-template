@@ -10,6 +10,7 @@ Todo エンドポイント。
 
 ビジネスロジックは書かない。
 """
+
 from typing import Annotated
 from uuid import UUID
 
@@ -29,7 +30,7 @@ from app.usecase.todo_usecases import (
     CreateTodoUseCase,
     DeleteTodoUseCase,
     ListTodosUseCase,
-    TodoNotFound,
+    TodoNotFoundError,
     UpdateTodoInput,
     UpdateTodoUseCase,
 )
@@ -84,7 +85,7 @@ async def update_todo(
                 due_date=body.due_date,
             )
         )
-    except TodoNotFound as e:
+    except TodoNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
     except DomainError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
@@ -99,5 +100,5 @@ async def delete_todo(
 ) -> None:
     try:
         await usecase.execute(todo_id, user.user_id)
-    except TodoNotFound as e:
+    except TodoNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e

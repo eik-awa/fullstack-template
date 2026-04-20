@@ -5,9 +5,11 @@ Revises:
 Create Date: 2026-04-01 00:00:00.000000
 
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision: str = "0001_initial"
@@ -25,7 +27,9 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column(
             "status",
-            sa.Enum("pending", "in_progress", "done", name="todostatus", native_enum=False, length=20),
+            sa.Enum(
+                "pending", "in_progress", "done", name="todostatus", native_enum=False, length=20
+            ),
             nullable=False,
             server_default="pending",
         ),

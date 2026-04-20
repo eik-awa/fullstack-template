@@ -3,6 +3,7 @@ DB接続とセッション管理。
 
 SQLAlchemy 2.0 の async エンジンを使用。
 """
+
 from collections.abc import AsyncIterator
 
 from sqlalchemy.ext.asyncio import (

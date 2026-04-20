@@ -1,8 +1,8 @@
 """pytest の共通フィクスチャ。"""
+
 from collections.abc import AsyncIterator
 from uuid import UUID
 
-import pytest
 import pytest_asyncio
 
 from app.domain.entities.todo import Todo

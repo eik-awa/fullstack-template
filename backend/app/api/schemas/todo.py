@@ -8,6 +8,7 @@ API の I/O スキーマ（Pydantic モデル）。
 バリデーションはまずこの層で行い、無効なリクエストは
 ドメインに到達する前に 422 で弾く。
 """
+
 from datetime import datetime
 from uuid import UUID
 

@@ -4,16 +4,17 @@
 InMemoryRepository を使うので DB 不要 = 高速。
 「ビジネスロジックが正しいか」に集中できる。
 """
+
 import pytest
 
-from app.domain.entities.todo import InvalidTodoTitle
+from app.domain.entities.todo import InvalidTodoTitleError
 from app.domain.value_objects.todo_status import TodoStatus
 from app.usecase.todo_usecases import (
     CreateTodoInput,
     CreateTodoUseCase,
     DeleteTodoUseCase,
     ListTodosUseCase,
-    TodoNotFound,
+    TodoNotFoundError,
     UpdateTodoInput,
     UpdateTodoUseCase,
 )
@@ -23,21 +24,19 @@ from tests.conftest import InMemoryTodoRepository
 class TestCreateTodo:
     async def test_正常系_作成できる(self, repo: InMemoryTodoRepository) -> None:
         usecase = CreateTodoUseCase(repo)
-        todo = await usecase.execute(
-            CreateTodoInput(user_id="user-1", title="買い物")
-        )
+        todo = await usecase.execute(CreateTodoInput(user_id="user-1", title="買い物"))
         assert todo.title == "買い物"
         assert todo.status == TodoStatus.PENDING
         assert todo.user_id == "user-1"
 
     async def test_異常系_空タイトル(self, repo: InMemoryTodoRepository) -> None:
         usecase = CreateTodoUseCase(repo)
-        with pytest.raises(InvalidTodoTitle):
+        with pytest.raises(InvalidTodoTitleError):
             await usecase.execute(CreateTodoInput(user_id="user-1", title="   "))
 
     async def test_異常系_長すぎるタイトル(self, repo: InMemoryTodoRepository) -> None:
         usecase = CreateTodoUseCase(repo)
-        with pytest.raises(InvalidTodoTitle):
+        with pytest.raises(InvalidTodoTitleError):
             await usecase.execute(CreateTodoInput(user_id="user-1", title="a" * 201))
 
 
@@ -73,7 +72,7 @@ class TestUpdateTodo:
         todo = await create.execute(CreateTodoInput(user_id="owner", title="T"))
 
         update = UpdateTodoUseCase(repo)
-        with pytest.raises(TodoNotFound):
+        with pytest.raises(TodoNotFoundError):
             await update.execute(
                 UpdateTodoInput(
                     todo_id=todo.id,

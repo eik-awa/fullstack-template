@@ -10,7 +10,9 @@
 3. 署名・aud・iss・exp を検証
 4. sub (= user_id) をリクエストコンテキストに注入
 """
+
 from dataclasses import dataclass
+from typing import Any
 
 import httpx
 from fastapi import Depends, Header, HTTPException, status
@@ -28,10 +30,10 @@ class CurrentUser:
 
 
 # --- JWKs キャッシュ（プロセスライフタイム）---
-_jwks_cache: dict[str, object] | None = None
+_jwks_cache: dict[str, Any] | None = None
 
 
-async def _get_jwks() -> dict[str, object]:
+async def _get_jwks() -> dict[str, Any]:
     """Cognitoの公開鍵セットを取得。"""
     global _jwks_cache
     if _jwks_cache is None:
@@ -52,7 +54,7 @@ async def _verify_cognito_token(token: str) -> CurrentUser:
         jwks = await _get_jwks()
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = next(
-            (k for k in jwks["keys"] if k["kid"] == unverified_header["kid"]),  # type: ignore[index]
+            (k for k in jwks["keys"] if k["kid"] == unverified_header["kid"]),
             None,
         )
         if rsa_key is None:

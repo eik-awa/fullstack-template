@@ -7,10 +7,12 @@ SQLAlchemy の ORM モデル。
 
 相互変換はリポジトリ実装が担う。
 """
+
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import DateTime, Enum as SqlEnum, ForeignKey, String, Text
+from sqlalchemy import DateTime, String, Text
+from sqlalchemy import Enum as SqlEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.domain.value_objects.todo_status import TodoStatus

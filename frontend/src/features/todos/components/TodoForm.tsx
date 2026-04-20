@@ -9,10 +9,11 @@ export function TodoForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
+    const trimmedDescription = description.trim();
     createMutation.mutate(
       {
         title: title.trim(),
-        description: description.trim() || undefined,
+        ...(trimmedDescription ? { description: trimmedDescription } : {}),
       },
       {
         onSuccess: () => {

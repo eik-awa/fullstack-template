@@ -7,8 +7,10 @@ CloudWatch で JSON として解析できるフォーマット。
 - レベル (info/warn/error) を適切に
 - 個人情報を書き込まない
 """
+
 import logging
 import sys
+from typing import cast
 
 import structlog
 
@@ -39,7 +41,7 @@ def configure_logging() -> None:
         processors.append(structlog.processors.JSONRenderer())
 
     structlog.configure(
-        processors=processors,
+        processors=processors,  # type: ignore[arg-type]
         wrapper_class=structlog.make_filtering_bound_logger(
             getattr(logging, settings.log_level.upper())
         ),
@@ -49,4 +51,4 @@ def configure_logging() -> None:
 
 def get_logger(name: str) -> structlog.stdlib.BoundLogger:
     """モジュール用のロガーを取得。"""
-    return structlog.get_logger(name)
+    return cast(structlog.stdlib.BoundLogger, structlog.get_logger(name))
